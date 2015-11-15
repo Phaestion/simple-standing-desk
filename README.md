@@ -1,0 +1,1 @@
+Standing desks are a very hot topic these days. I've been using a modified old desk as a standing desk, but it is not good enough. I set out to develop a simple adjustable standing desk. It is fairly easy to construct, using only one board of plywood or something similar. This is my simple standing desk design. 
