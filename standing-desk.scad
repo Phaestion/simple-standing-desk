@@ -1,8 +1,7 @@
 bottomLegHeight= 700;
 topLegHeight= 600;
 
-topLegAdjust=100;
-bottomLegAdjust=0;
+topLegAdjust=400;
 
 groove=10;
 paddingGroove=100;
@@ -22,6 +21,14 @@ bottomLegWidthOutside= bottomLegWidthInside + boardThickness;
 topLegWidthInside= bottomLegWidthInside - boardThickness;
 topLegWidthOutside= bottomLegWidthInside;
 
+
+module legs()
+{
+    legPos(x=0, y=0, z=0, rt=270);
+    legPos(x=tableLegSpaceWidth, y=0, z=0, rt=0);
+    legPos(x=0, y=tableLegSpaceLength, z=0, rt=180);
+    legPos(x=tableLegSpaceWidth, y=tableLegSpaceLength, z=0, rt=90);
+}
 
 module legPos(x,y,z,rt)
 {
@@ -77,35 +84,61 @@ module topLeg()
     }
 }
 
-module slatLongBottomPos(rt)
-{
-    translate([boardThickness,boardThickness, 0])
-    rotate([0,0,rt])
-    slatLong();
-}
-module slatLongTopPos(rt)
-{
-    translate([boardThickness,boardThickness, topLegHeight + paddingGroove/2])
-    rotate([0,0,rt])
-    slatLong();
-}
 
-
-module slatLong()
+module slatLong(z, rt)
 {
+    translate([boardThickness,boardThickness, z + paddingGroove/2])
+    rotate([0,0,rt])
     cube([boardThickness, tableLegSpaceLength - 2*boardThickness, paddingGroove/2]);
 }
 
-module slatShortTopPos(y, rt)
+module slatShort(z, rt)
 {
-    translate([boardThickness,y + boardThickness, topLegHeight + paddingGroove/2])
+    translate([boardThickness,boardThickness, z + paddingGroove/2])
     rotate([0,0,rt])
-    slatShort();
+    cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
 }
 
-module slatShort()
+module slats()
 {
-    cube([boardThickness, tableLegSpaceWidth - 2*boardThickness, paddingGroove/2]);
+    slatTopPos= bottomLegHeight - paddingGroove + (topLegAdjust - (bottomLegHeight - topLegHeight));
+    
+    {
+        translate([boardThickness,boardThickness, slatTopPos + paddingGroove/2])
+        cube([boardThickness, tableLegSpaceLength - 2*boardThickness, paddingGroove/2]);
+    }
+    
+    {
+        translate([0,0, 0])
+        cube([boardThickness, tableLegSpaceLength, paddingGroove/2]);
+    }
+    
+    {
+        translate([boardThickness,boardThickness, 0])
+        rotate([0,0,270])
+        cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
+    }
+
+    {
+        translate([boardThickness, tableLegSpaceLength, 0])
+        rotate([0,0,270])
+        cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
+    }
+    
+    
+    {
+        translate([boardThickness*2,boardThickness*2, slatTopPos + paddingGroove/2])
+        rotate([0,0,270])
+        cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
+    }
+
+    
+    {
+        translate([boardThickness*2, tableLegSpaceLength - boardThickness, slatTopPos + paddingGroove/2])
+        rotate([0,0,270])
+        cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
+    }
+   
 }
 
 module tableTop()
@@ -120,15 +153,8 @@ module tableTop()
 
 module table()
 {
-    legPos(x=0, y=0, z=0, rt=270);
-    legPos(x=tableLegSpaceWidth, y=0, z=0, rt=0);
-    legPos(x=0, y=tableLegSpaceLength, z=0, rt=180);
-    legPos(x=tableLegSpaceWidth, y=tableLegSpaceLength, z=0, rt=90);
-    
-    slatLongTopPos(rt=0);
-    slatShortTopPos(y=0, rt=270);
-    slatShortTopPos(y= tableLegSpaceLength - boardThickness*2  ,rt=270);
-    
+    legs();  
+    slats();
     tableTop();
 }
 
