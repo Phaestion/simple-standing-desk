@@ -1,7 +1,7 @@
 bottomLegHeight= 700;
 topLegHeight= 600;
 
-topLegAdjust=400;
+topLegAdjust=300;
 
 groove=10;
 paddingGroove=100;
@@ -21,7 +21,7 @@ bottomLegWidthOutside= bottomLegWidthInside + boardThickness;
 topLegWidthInside= bottomLegWidthInside - boardThickness;
 topLegWidthOutside= bottomLegWidthInside;
 
-flat= true;
+flat= false;
 flatpad= 10;
 
 module legs()
@@ -83,10 +83,11 @@ module legPos(x,y,z,rt)
     translate([x,y,z])
     rotate([0,0,rt])    
     leg();
+
 }
 module leg()
 {    
-    translate([0,0,bottomLegAdjust])
+    translate([0,0,0])
     bottomLeg();
     
     translate([0,0,topLegAdjust])
@@ -97,8 +98,30 @@ module bottomLeg()
 {
     if (flat)
     {
+       translate([boardThickness,0,0])
+       rotate([0,90,0])
+       rotate([0,0,90])
+       color("red")            
+       text(str(bottomLegWidthInside), size=25);
+        
+       translate([boardThickness,50,300])
+       rotate([180,180,0])
+       rotate([0,270,0])
+       color("red")            
+       text(str(bottomLegHeight), size=25);
        cube([boardThickness,bottomLegWidthInside,bottomLegHeight]);
         
+       translate([boardThickness,100,0])
+       rotate([0,90,0])
+       rotate([0,0,90])
+       color("red")            
+       text(str(bottomLegWidthOutside), size=25);
+        
+       translate([boardThickness,140,300])
+       rotate([180,180,0])
+       rotate([0,270,0])
+       color("red")            
+       text(str(bottomLegHeight), size=25);
        translate([0,bottomLegWidthInside + flatpad, 0])
        cube([boardThickness,bottomLegWidthOutside,bottomLegHeight]);
     }
@@ -125,9 +148,34 @@ module bottomLeg()
 module topLeg()
 {
     if (flat)
-    {       
+    {
+            
+        translate([boardThickness,0,0])
+        rotate([0,90,0])
+        rotate([0,0,90])
+        color("red")            
+        text(str(topLegWidthOutside), size=25);
+        
+        translate([boardThickness,50,300])
+        rotate([180,180,0])
+        rotate([0,270,0])
+        color("red")            
+        text(str(topLegHeight), size=25);
+        
         translate([0, 0, 0])
         cube([boardThickness,topLegWidthOutside,topLegHeight]);
+        
+        translate([boardThickness,100,0])
+        rotate([0,90,0])
+        rotate([0,0,90])
+        color("red")            
+        text(str(topLegWidthInside), size=25);
+        
+        translate([boardThickness,130,300])
+        rotate([180,180,0])
+        rotate([0,270,0])
+        color("red")            
+        text(str(topLegHeight), size=25);
         
         b= topLegWidthOutside + flatpad;
         translate([0, b, 0])
@@ -159,44 +207,111 @@ module slats()
 {
     if (flat)
     {
-        i= tableTopWidth + flatpad;
-        {
-            translate([0,0,i])     
-        cube([boardThickness,tableLegSpaceLength - 2*boardThickness, paddingGroove/2]);
-        }
-        j= i + paddingGroove/2 + flatpad;
-        {
-            translate([0,0, j])
-            cube([boardThickness, tableLegSpaceLength, paddingGroove/2]);
-        }
-        k= j + paddingGroove/2 + flatpad;
+      
+               //top slats
+        slatTopPos= bottomLegHeight - paddingGroove + (topLegAdjust - (bottomLegHeight - topLegHeight));
         
+        a= tableTopWidth + flatpad;
         {
-            translate([0,0, k])
-                cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
-        }
-        
-        l= tableLegSpaceWidth - boardThickness + flatpad;
-        
-        {
-            translate([0, n,m])
-            cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
+            translate([boardThickness,300,a])
+            rotate([90,0,90])
+            color("red")
+            text(str(tableLegSpaceLength - 2*boardThickness), size=25);
+            
+            translate([boardThickness,0,a+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,0,a])
+            cube([boardThickness, tableLegSpaceLength - 2*boardThickness, paddingGroove/2]);
         }
         
-        m= k + paddingGroove/2 + flatpad;
+        b= a + paddingGroove/2 + flatpad;
         {
-            translate([0, 0,m])
+            translate([boardThickness,300,b])
+            rotate([90,0,90])
+            color("red")
+            text(str( tableLegSpaceWidth - boardThickness*3), size=25);
+            
+            translate([boardThickness,0,b+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,0,b])
             cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
         }
         
-        n= tableLegSpaceWidth - boardThickness*3 + flatpad;
-        {
-            translate([0, l,k])
+        c= tableLegSpaceWidth - boardThickness*3 + flatpad;
+       {           
+            translate([boardThickness,300 + c,b])
+            rotate([90,0,90])
+            color("red")
+            text(str( tableLegSpaceWidth - boardThickness*3), size=25);
+            
+            translate([boardThickness,c,b+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,c,b])
+           
             cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
+        }
+        
+        //bottom slats
+        d= b + paddingGroove/2 + flatpad;
+        {
+            translate([boardThickness,300,d])
+            rotate([90,0,90])
+            color("red")
+            text(str(tableLegSpaceLength+ 2*boardThickness), size=25);
+            
+            translate([boardThickness,0,d+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,0,d])
+            cube([boardThickness, tableLegSpaceLength+ 2*boardThickness, paddingGroove/2]);
+        }
+        
+        e= d + paddingGroove/2 + flatpad;
+        {
+            translate([boardThickness,300,e])
+            rotate([90,0,90])
+            color("red")
+            text(str(tableLegSpaceLength+ 3*boardThickness), size=25);
+            
+            translate([boardThickness,0,e+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,0,e])
+            cube([boardThickness, tableLegSpaceWidth + 3*boardThickness, paddingGroove/2]);
+        }
+
+        f= tableLegSpaceWidth + 3*boardThickness + flatpad;
+        {
+            translate([boardThickness,300 + f,e])
+            rotate([90,0,90])
+            color("red")
+            text(str(tableLegSpaceLength+ 3*boardThickness), size=25);
+            
+            translate([boardThickness,f,e+40])
+            rotate([0,90,0])
+            color("red")
+            text(str(paddingGroove/2), size=20);
+            
+            translate([0,f,e])
+            cube([boardThickness, tableLegSpaceWidth + 3*boardThickness, paddingGroove/2]);
         }
     }
     else
     {
+        //top slats
         slatTopPos= bottomLegHeight - paddingGroove + (topLegAdjust - (bottomLegHeight - topLegHeight));
         
         {
@@ -205,34 +320,35 @@ module slats()
         }
         
         {
-            translate([0,0, 0])
-            cube([boardThickness, tableLegSpaceLength, paddingGroove/2]);
-        }
-        
-        {
-            translate([boardThickness,boardThickness, 0])
-            rotate([0,0,270])
-            cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
-        }
-
-        {
-            translate([boardThickness, tableLegSpaceLength, 0])
-            rotate([0,0,270])
-            cube([boardThickness, tableLegSpaceWidth - boardThickness, paddingGroove/2]);
-        }
-        
-        
-        {
             translate([boardThickness*2,boardThickness*2, slatTopPos + paddingGroove/2])
             rotate([0,0,270])
             cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
         }
 
         
-        {
+       {
             translate([boardThickness*2, tableLegSpaceLength - boardThickness, slatTopPos + paddingGroove/2])
             rotate([0,0,270])
             cube([boardThickness, tableLegSpaceWidth - boardThickness*3, paddingGroove/2]);
+        }
+        
+        //bottom slats
+        {
+            translate([- 2*boardThickness, -boardThickness, bottomLegHeight/2])
+            cube([boardThickness, tableLegSpaceLength+ 2*boardThickness, paddingGroove/2]);
+        }
+        
+        {
+            translate([- 2*boardThickness,-boardThickness, bottomLegHeight/2])
+            rotate([0,0,270])
+            cube([boardThickness, tableLegSpaceWidth + 3*boardThickness, paddingGroove/2]);
+        }
+
+        
+        {
+            translate([- 2*boardThickness, tableLegSpaceLength + 2*boardThickness, bottomLegHeight/2])
+            rotate([0,0,270])
+            cube([boardThickness, tableLegSpaceWidth + 3*boardThickness, paddingGroove/2]);
         }
     }
 }
@@ -240,18 +356,29 @@ module slats()
 module tableTop()
 {
     if (flat)
-    {
+    {          
+       
+        translate([boardThickness,100,0])
+        rotate([90,0,90])
+        color("red")
+        text(str(tableTopLength), size=100);
+        
+        translate([boardThickness,0,500])
+        rotate([0,90,0])
+        color("red")
+        text(str(tableTopWidth), size=100);
+        
         cube([boardThickness,tableTopLength,tableTopWidth]);
+
         echo("Table top is: ", tableTopLength, " x ", tableTopWidth);
     }
     else
     {
         translate([(tableLegSpaceLength - tableTopLength)/2, (tableLegSpaceLength - tableTopLength)/2, bottomLegHeight  + boardThickness + (topLegAdjust - (bottomLegHeight - topLegHeight))])
         rotate([0,90,0])
-        difference()
-        {
-            cube([boardThickness,tableTopLength,tableTopWidth]);
-        }
+    
+        cube([boardThickness,tableTopLength,tableTopWidth]);
+        
     }
 }
 
