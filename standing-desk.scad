@@ -369,8 +369,6 @@ module tableTop()
         text(str(tableTopWidth), size=100);
         
         cube([boardThickness,tableTopLength,tableTopWidth]);
-
-        echo("Table top is: ", tableTopLength, " x ", tableTopWidth);
     }
     else
     {
